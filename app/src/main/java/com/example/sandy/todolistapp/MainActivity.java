@@ -4,14 +4,35 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    ArrayAdapter<String> todolistAdapter;
+    ArrayList<String> todolist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ListView listView = (ListView) findViewById(R.id.listview);
+
+        // Initialize array to store to-do items
+        // Temporarily the list is not saved
+        todolist = new ArrayList<>();
+        // Populate to do list with temp items
+        todolist.add("Buy apples");
+        todolist.add("Create App");
+        todolist.add("Work on typing");
+
+        // Initialize Adapter to display todolist array
+        todolistAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todolist);
+        listView.setAdapter(todolistAdapter);
     }
 
 
