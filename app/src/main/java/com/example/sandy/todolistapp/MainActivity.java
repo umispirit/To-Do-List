@@ -1,5 +1,6 @@
 package com.example.sandy.todolistapp;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
+    static final int ADD_TASK_REQUEST = 1;
+
     ArrayAdapter<String> todolistAdapter;
     ArrayList<String> todolist;
 
@@ -22,6 +25,7 @@ public class MainActivity extends ActionBarActivity {
 
         ListView listView = (ListView) findViewById(R.id.listview);
 
+        //TODO replace temporary list with loading list from stored memory
         // Initialize array to store to-do items
         // Temporarily the list is not saved
         todolist = new ArrayList<>();
@@ -54,7 +58,30 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_add){
+            openAddTask();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openAddTask(){
+        // open the Add screen
+        int requestCode = ADD_TASK_REQUEST;
+        Intent intent = new Intent(this, AddTaskActivity.class);
+        startActivityForResult(intent, requestCode);
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == ADD_TASK_REQUEST){
+            if (resultCode == RESULT_OK){
+                String newTask = data.getStringExtra(AddTaskActivity.EXTRA_NEW_TASK);
+                todolist.add(newTask);
+                todolistAdapter.notifyDataSetChanged();
+            }
+        }
+
     }
 }
